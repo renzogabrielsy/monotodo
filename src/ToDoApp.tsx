@@ -10,17 +10,19 @@ import {
   Grid,
   Flex,
   useColorMode,
-  Accordion
+  Accordion,
 } from "@chakra-ui/react";
 import ToDoItem from "./ToDoItem";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { Logo } from "./Logo";
+import AddTask from "./AddTask";
 
 export default function ToDoApp() {
+  const [scrollBehavior, setScrollBehavior] = React.useState("inside");
   return (
     <Grid //app object
-      minH="35em"
-      minWidth="20em"
+      height="38em"
+      width="20em"
       padding={1}
       border="2px"
       borderColor="blackAlpha.600"
@@ -34,15 +36,28 @@ export default function ToDoApp() {
           <ColorModeSwitcher />
         </Flex>
         <Flex direction="column">
-          <Logo h="5vmax" pointerEvents="none" margin={10}  />
-          <Text fontWeight="extrabold" fontSize="2em">
+          <Logo h="7vmax" pointerEvents="none" margin={2} />
+          <Text fontWeight="extrabold" fontSize="1.7em" margin={5}>
             To Do App
           </Text>
-          <Accordion defaultIndex={[0]} allowMultiple>
-            <ToDoItem />
-
-          </Accordion>
+          <AddTask />
+          <Flex justify="center">
+            <Accordion
+              defaultIndex={[]}
+              allowMultiple
+              overflowY="scroll"
+              height="17em"
+            >
+              <ToDoItem />
+              <ToDoItem />
+              <ToDoItem />
+              <ToDoItem />
+            </Accordion>
+          </Flex>
         </Flex>
+      </Flex>
+      <Flex justify="center" align="center" fontSize="2xs" fontStyle="italic">
+        Made by Renzo Sy
       </Flex>
     </Grid>
   );
