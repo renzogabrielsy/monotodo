@@ -1,4 +1,3 @@
-import React from "react";
 import {
   AccordionItem,
   AccordionButton,
@@ -17,23 +16,34 @@ import {
   CheckIcon,
   ChevronRightIcon,
 } from "@chakra-ui/icons";
-import { FaItalic } from "react-icons/fa";
 
-type Props = {};
+type Props = {
+  inDate: any;
+  dueDate: any;
+  taskName: string;
+  taskDesc: string;
+};
 
-export default function ToDoItem() {
+export default function ToDoItem({
+  inDate,
+  dueDate,
+  taskName,
+  taskDesc,
+}: Props) {
   return (
-    <AccordionItem width="17em">
-      <h2>
-        <AccordionButton>
-          <Box as="span" flex="1" textAlign="left">
-            Task Title
-          </Box>
-          <AccordionIcon margin={2} />
-          <CheckIcon margin={2} />
-        </AccordionButton>
-      </h2>
-      <AccordionPanel pb={4} fontSize="1rem">
+    <AccordionItem width="16em">
+
+        <Flex align="center">
+          <AccordionButton>
+            <Box as="span" flex="1" textAlign="left">
+              <Text fontSize="0.8em">{taskName}</Text>
+            </Box>
+            <AccordionIcon margin={0} />
+          </AccordionButton>
+          <CheckIcon fontSize="xs" margin={2} />
+        </Flex>
+
+      <AccordionPanel pb={2} fontSize="1rem">
         <Divider />
         <Flex
           justify="space-evenly"
@@ -52,7 +62,7 @@ export default function ToDoItem() {
               fontStyle="italic"
               marginLeft={2}
             >
-              1/1/20
+              {inDate}
             </Text>
           </Flex>
           <Divider orientation="vertical" />
@@ -66,7 +76,7 @@ export default function ToDoItem() {
               fontStyle="italic"
               marginLeft={2}
             >
-              1/1/20
+              {dueDate}
             </Text>
           </Flex>
         </Flex>
@@ -81,7 +91,7 @@ export default function ToDoItem() {
               wrap="wrap"
               justify="flex-start"
             >
-              Task Detailss lfsda ljfal jsljfdasljfa jdshfjaslhf alhf alhj
+              {taskDesc}
             </Flex>
             <Spacer />
             <Flex flex="flex-end">

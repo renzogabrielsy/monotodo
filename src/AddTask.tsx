@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Button,
   Modal,
@@ -29,22 +28,22 @@ export default function AddTask() {
         {" "}
         Add New Task{" "}
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size={{base: "xs", md: "md"}}>
         <ModalOverlay />
-        <ModalContent fontFamily="Roboto Mono">
+        <ModalContent fontFamily="Roboto Mono" >
           <ModalHeader>Add Task</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Flex marginTop={5} marginBottom={5} justify="space-between" direction="row" height="5em">
               <FormControl>
                 <FormLabel>Date Added</FormLabel>
-                <Input placeholder="Date Added" size="s" type="date" />
+                <Input placeholder="Date Added" size={{base: "xs", md: "sm"}} type="date" />
                 <FormHelperText fontSize="2xs">Input the task's date added.</FormHelperText>
               </FormControl>
-              <Divider orientation="vertical" marginLeft={4} marginRight={4}/>
+              <Divider orientation="vertical" marginLeft={2} marginRight={2}/>
               <FormControl>
                 <FormLabel>Date Due</FormLabel>
-                <Input placeholder="Date Due" size="s" type="date" />
+                <Input placeholder="Date Due" size={{base: "xs", md: "sm"}} type="date" />
                 <FormHelperText fontSize="2xs">Input the task's date due.</FormHelperText>
               </FormControl>
             </Flex>

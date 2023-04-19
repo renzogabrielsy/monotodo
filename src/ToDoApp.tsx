@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ChakraProvider,
   Box,
@@ -16,18 +15,18 @@ import ToDoItem from "./ToDoItem";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { Logo } from "./Logo";
 import AddTask from "./AddTask";
+import ToDoList from "./ToDoList";
 
 export default function ToDoApp() {
-  const [scrollBehavior, setScrollBehavior] = React.useState("inside");
   return (
     <Grid //app object
-      height="38em"
+      height={{ base: "38em", md: "40.5em" }}
       width="20em"
       padding={1}
-      border="2px"
-      borderColor="blackAlpha.600"
-      borderRadius={45}
-      boxShadow="dark-lg"
+      border={{ base: 0, md: "2px" }}
+      borderColor={{ base: "blackAlpha.500", md: "blackAlpha.500" }}
+      borderRadius={50}
+      boxShadow={{ base: 0, md: "dark-lg" }}
       p="6"
       rounded="md"
     >
@@ -36,23 +35,13 @@ export default function ToDoApp() {
           <ColorModeSwitcher />
         </Flex>
         <Flex direction="column">
-          <Logo h="7vmax" pointerEvents="none" margin={2} />
+          <Logo h="5em" pointerEvents="none" margin={2} />
           <Text fontWeight="extrabold" fontSize="1.7em" margin={5}>
             To Do App
           </Text>
           <AddTask />
-          <Flex justify="center">
-            <Accordion
-              defaultIndex={[]}
-              allowMultiple
-              overflowY="scroll"
-              height="17em"
-            >
-              <ToDoItem />
-              <ToDoItem />
-              <ToDoItem />
-              <ToDoItem />
-            </Accordion>
+          <Flex justify="center" marginTop={4}>
+            <ToDoList />
           </Flex>
         </Flex>
       </Flex>
