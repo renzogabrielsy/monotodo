@@ -18,8 +18,6 @@ import {
   Spacer,
 } from "@chakra-ui/react";
 
-type Props = {};
-
 export default function AddTask() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (

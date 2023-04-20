@@ -1,23 +1,25 @@
 import {
-  ChakraProvider,
-  Box,
   Text,
-  Link,
-  VStack,
-  Code,
-  theme,
   Grid,
   Flex,
-  useColorMode,
-  Accordion,
 } from "@chakra-ui/react";
-import ToDoItem from "./ToDoItem";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { Logo } from "./Logo";
 import AddTask from "./AddTask";
 import ToDoList from "./ToDoList";
+import DataSet from "./DataSet";
+import { useState, useEffect, Component } from "react";
+
+let listArray: {
+  key: number;
+  inDate: string;
+  dueDate: string;
+  taskName: string;
+  taskDesc: string;
+}[] = DataSet //separate dataset file
 
 export default function ToDoApp() {
+  
   return (
     <Grid //app object
       height={{ base: "38em", md: "40.5em" }}
@@ -41,7 +43,7 @@ export default function ToDoApp() {
           </Text>
           <AddTask />
           <Flex justify="center" marginTop={4}>
-            <ToDoList />
+            <ToDoList todos={listArray} />
           </Flex>
         </Flex>
       </Flex>
