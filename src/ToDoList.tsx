@@ -3,7 +3,7 @@ import ToDoItem from "./ToDoItem";
 import React from "react";
 import { useState, useEffect } from "react";
 
-interface ToDoProps {
+interface todoProps {
   key: number;
   inDate: string;
   dueDate: string;
@@ -11,11 +11,11 @@ interface ToDoProps {
   taskDesc: string;
 }
 
-type Props = { todos: ToDoProps[] };
+type Props = { todos: todoProps[] };
 
 export default function ToDoList(props: Props) {
   return (
-    <Accordion defaultIndex={[]} allowMultiple overflowY="scroll" height="17em">
+    <Accordion defaultIndex={[]} allowMultiple overflowY="auto" height="17em">
       {props.todos.map(({ key, inDate, dueDate, taskName, taskDesc }) => (
         <ToDoItem
           key={key}

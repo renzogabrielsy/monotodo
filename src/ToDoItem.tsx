@@ -86,10 +86,11 @@ export default function ToDoItem({
           <Flex>
             <Flex
               fontStyle="italic"
-              fontSize="smaller"
+              fontSize="xs"
               textAlign="start"
               wrap="wrap"
               justify="flex-start"
+              margin={2}
             >
               {taskDesc}
             </Flex>
