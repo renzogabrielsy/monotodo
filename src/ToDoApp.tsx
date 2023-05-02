@@ -8,7 +8,6 @@ import { useState, useEffect, Component } from "react";
 
 let listArray: {
   key: number;
-  inDate: string;
   dueDate: string;
   taskName: string;
   taskDesc: string;
@@ -17,7 +16,6 @@ let listArray: {
 interface task {
   key: number;
   taskName: string;
-  inDate: string;
   dueDate: string;
   taskDesc: string;
 }
@@ -27,7 +25,6 @@ export default function ToDoApp() {
   const addToDo = (
     newKey: number,
     newName: string,
-    newInDate: string,
     newDueDate: string,
     newDesc: string
   ) => {
@@ -35,7 +32,6 @@ export default function ToDoApp() {
       {
         key: newKey,
         taskName: newName,
-        inDate: newInDate,
         dueDate: newDueDate,
         taskDesc: newDesc,
       },

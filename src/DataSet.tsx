@@ -1,7 +1,6 @@
 let DataSet: {
   key: number;
   taskName: string;
-  inDate: string;
   dueDate: string;
   taskDesc: string;
 }[] = [

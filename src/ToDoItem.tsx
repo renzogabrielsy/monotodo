@@ -18,30 +18,23 @@ import {
 } from "@chakra-ui/icons";
 
 type Props = {
-  inDate: any;
   dueDate: any;
   taskName: string;
   taskDesc: string;
 };
 
-export default function ToDoItem({
-  inDate,
-  dueDate,
-  taskName,
-  taskDesc,
-}: Props) {
+export default function ToDoItem({ dueDate, taskName, taskDesc }: Props) {
   return (
     <AccordionItem width="16em">
-
-        <Flex align="center">
-          <AccordionButton>
-            <Box as="span" flex="1" textAlign="left">
-              <Text fontSize="0.8em">{taskName}</Text>
-            </Box>
-            <AccordionIcon margin={0} />
-          </AccordionButton>
-          <CheckIcon fontSize="xs" margin={2} />
-        </Flex>
+      <Flex align="center">
+        <AccordionButton>
+          <Box as="span" flex="1" textAlign="left">
+            <Text fontSize="0.8em">{taskName}</Text>
+          </Box>
+          <AccordionIcon margin={0} />
+        </AccordionButton>
+        <CheckIcon fontSize="xs" margin={2} />
+      </Flex>
 
       <AccordionPanel pb={2} fontSize="1rem">
         <Divider />
@@ -52,20 +45,6 @@ export default function ToDoItem({
           padding={1}
           height="2em"
         >
-          <Flex justify="space-between">
-            <Text fontSize="2xs" fontWeight="bold">
-              Date Added:
-            </Text>
-            <Text
-              fontSize="2xs"
-              fontWeight="medium"
-              fontStyle="italic"
-              marginLeft={2}
-            >
-              {inDate}
-            </Text>
-          </Flex>
-          <Divider orientation="vertical" />
           <Flex direction="row">
             <Text fontSize="2xs" fontWeight="bold">
               Date Due:
@@ -83,22 +62,21 @@ export default function ToDoItem({
         <Divider />
         <Flex align="row" maxWidth="19em">
           <ChevronRightIcon margin={2} />
-          <Flex>
-            <Flex
-              fontStyle="italic"
-              fontSize="xs"
-              textAlign="start"
-              wrap="wrap"
-              justify="flex-start"
-              margin={2}
-            >
-              {taskDesc}
-            </Flex>
-            <Spacer />
-            <Flex flex="flex-end">
-              <EditIcon margin={2} />
-              <DeleteIcon margin={2} />
-            </Flex>
+          <Flex
+            flex="initial"
+            fontStyle="italic"
+            fontSize="xs"
+            textAlign="start"
+            wrap="wrap"
+            justify="flex-start"
+            margin={2}
+          >
+            {taskDesc}
+          </Flex>
+          <Spacer />
+          <Flex flex="flex-end">
+            <EditIcon margin={2} />
+            <DeleteIcon margin={2} />
           </Flex>
         </Flex>
       </AccordionPanel>

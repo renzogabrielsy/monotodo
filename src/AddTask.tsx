@@ -22,7 +22,6 @@ interface Props {
   addToDo: (
     newKey: number,
     newName: string,
-    newInDate: string,
     newDueDate: string,
     newDesc: string
   ) => void;
@@ -31,7 +30,6 @@ interface Props {
 export default function AddTask(props: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [newName, handleNameChange, resetName] = useInputHook("");
-  const [newInDate, handleInDateChange, resetInDate] = useInputHook("");
   const [newDueDate, handleDueDateChange, resetDueDate] = useInputHook("");
   const [newDesc, handleDescChange, resetDesc] = useInputHook("");
   return (
@@ -50,7 +48,6 @@ export default function AddTask(props: Props) {
               props.addToDo(
                 Date.now(),
                 newName,
-                newInDate,
                 newDueDate,
                 newDesc
               );
@@ -65,24 +62,6 @@ export default function AddTask(props: Props) {
                 height="5em"
               >
                 <FormControl>
-                  <FormLabel>Date Added</FormLabel>
-                  <Input
-                    placeholder="Date Added"
-                    size={{ base: "xs", md: "sm" }}
-                    type="date"
-                    value={newInDate}
-                    onChange={handleInDateChange}
-                  />
-                  <FormHelperText fontSize="2xs">
-                    Input the task's date added.
-                  </FormHelperText>
-                </FormControl>
-                <Divider
-                  orientation="vertical"
-                  marginLeft={2}
-                  marginRight={2}
-                />
-                <FormControl>
                   <FormLabel>Date Due</FormLabel>
                   <Input
                     placeholder="Date Due"
@@ -96,9 +75,6 @@ export default function AddTask(props: Props) {
                   </FormHelperText>
                 </FormControl>
               </Flex>
-
-              <Divider marginBottom={4} />
-
               <FormLabel>Task</FormLabel>
               <Input
                 type="text"
@@ -125,7 +101,6 @@ export default function AddTask(props: Props) {
                   onClose();
                   resetName();
                   resetDueDate();
-                  resetInDate();
                   resetDesc();
                 }}
               >
