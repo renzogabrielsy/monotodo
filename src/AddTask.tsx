@@ -14,16 +14,18 @@ import {
   Textarea,
   Input,
   Flex,
-  Divider,
+  useToast,
 } from "@chakra-ui/react";
 import useInputHook from "./hooks/useInputHook";
 
 interface Props {
   addToDo: (
     newKey: number,
+    newID: number,
     newName: string,
     newDueDate: string,
-    newDesc: string
+    newDesc: string,
+    completed: boolean
   ) => void;
 }
 
@@ -32,6 +34,13 @@ export default function AddTask(props: Props) {
   const [newName, handleNameChange, resetName] = useInputHook("");
   const [newDueDate, handleDueDateChange, resetDueDate] = useInputHook("");
   const [newDesc, handleDescChange, resetDesc] = useInputHook("");
+  const addAlert = useToast({
+    title: "Task Added",
+    description: "Your task has been successfully added!",
+    status: "success",
+    duration: 5000,
+    isClosable: true,
+  });
   return (
     <>
       <Button margin={4} colorScheme="teal" onClick={onOpen}>
@@ -47,13 +56,22 @@ export default function AddTask(props: Props) {
               e.preventDefault();
               props.addToDo(
                 Date.now(),
+                Date.now(),
                 newName,
                 newDueDate,
-                newDesc
+                newDesc,
+                false
               );
             }}
           >
             <ModalBody>
+              <FormLabel>Task</FormLabel>
+              <Input
+                type="text"
+                placeholder="Task"
+                value={newName}
+                onChange={handleNameChange}
+              />
               <Flex
                 marginTop={5}
                 marginBottom={5}
@@ -65,23 +83,16 @@ export default function AddTask(props: Props) {
                   <FormLabel>Date Due</FormLabel>
                   <Input
                     placeholder="Date Due"
-                    size={{ base: "xs", md: "sm" }}
+                    size={{ base: "sm", md: "sm" }}
                     type="date"
                     value={newDueDate}
                     onChange={handleDueDateChange}
                   />
-                  <FormHelperText fontSize="2xs">
+                  <FormHelperText fontSize="xs">
                     Input the task's date due.
                   </FormHelperText>
                 </FormControl>
               </Flex>
-              <FormLabel>Task</FormLabel>
-              <Input
-                type="text"
-                placeholder="Task"
-                value={newName}
-                onChange={handleNameChange}
-              />
               <FormControl mt={4}>
                 <FormLabel>Description</FormLabel>
                 <Textarea
@@ -102,6 +113,7 @@ export default function AddTask(props: Props) {
                   resetName();
                   resetDueDate();
                   resetDesc();
+                  addAlert()
                 }}
               >
                 Add Task

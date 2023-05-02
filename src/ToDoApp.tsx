@@ -8,36 +8,51 @@ import { useState, useEffect, Component } from "react";
 
 let listArray: {
   key: number;
+  id: number;
   dueDate: string;
   taskName: string;
   taskDesc: string;
+  completed: boolean;
 }[] = DataSet; //separate dummy dataset file
 
 interface task {
   key: number;
+  id: number;
   taskName: string;
   dueDate: string;
   taskDesc: string;
+  completed: boolean;
 }
 
 export default function ToDoApp() {
   const [todos, setTodos] = useState<task[]>(listArray);
   const addToDo = (
     newKey: number,
+    newID: number,
     newName: string,
     newDueDate: string,
-    newDesc: string
+    newDesc: string,
+    completed: boolean
   ) => {
     setTodos([
       {
         key: newKey,
+        id: newID,
         taskName: newName,
         dueDate: newDueDate,
         taskDesc: newDesc,
+        completed: completed,
       },
       ...todos,
     ]);
   };
+
+  const removeTodo = (todoID: number) => {
+    const newTodos = todos.filter((todo) => todo.id !== todoID)
+    setTodos(newTodos);
+  };
+
+  console.log(todos)
 
   return (
     <Grid //app object
@@ -60,10 +75,10 @@ export default function ToDoApp() {
           <Text fontWeight="extrabold" fontSize="1.7em" margin={5}>
             To Do App
           </Text>
-          <AddTask addToDo={addToDo}/>
+          <AddTask addToDo={addToDo} />
           <Flex justify="center" marginTop={4}>
-          <ToDoList todos={todos} />
-            
+            <ToDoList todos={todos} removeTodo={removeTodo} />
+
             {/* {todos ? <ToDoList todos={todos} /> : null } */}
           </Flex>
         </Flex>
