@@ -15,52 +15,67 @@ import {
   Input,
   Flex,
   useToast,
+  IconButton,
 } from "@chakra-ui/react";
 import useInputHook from "./hooks/useInputHook";
+import { EditIcon } from "@chakra-ui/icons";
 
 interface Props {
-  addToDo: (
+  id: number;
+  dueDate: string;
+  taskName: string;
+  taskDesc: string;
+  completed: boolean;
+  editTodo: (
+    todoID: number,
     newKey: number,
     newID: number,
-    newName: string,
-    newDueDate: string,
+    newTask: string,
+    newDate: string,
     newDesc: string,
-    completed: boolean
+    newCompleted: boolean
   ) => void;
 }
 
-export default function AddTask(props: Props) {
+export default function EditTask(props: Props) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [newName, handleNameChange, resetName] = useInputHook("");
-  const [newDueDate, handleDueDateChange, resetDueDate] = useInputHook("");
-  const [newDesc, handleDescChange, resetDesc] = useInputHook("");
-  const addAlert = useToast({
-    title: "Task Added",
-    description: "Your task has been successfully added!",
+  const [newName, handleNameChange, resetName] = useInputHook(props.taskName);
+  const [newDueDate, handleDueDateChange, resetDueDate] = useInputHook(
+    props.dueDate
+  );
+  const [newDesc, handleDescChange, resetDesc] = useInputHook(props.taskDesc);
+  const editAlert = useToast({
+    title: "Task Edited",
+    description: "Your task has been successfully edited!",
     status: "success",
     duration: 5000,
     isClosable: true,
   });
   return (
     <>
-      <Button margin={4} colorScheme="teal" onClick={onOpen}>
-        Add New Task
-      </Button>
+      <IconButton
+        aria-label="Delete entry"
+        size="xs"
+        variant="outline"
+        icon={<EditIcon />}
+        onClick={onOpen}
+      />
       <Modal isOpen={isOpen} onClose={onClose} size={{ base: "xs", md: "md" }}>
         <ModalOverlay />
         <ModalContent fontFamily="Roboto Mono">
-          <ModalHeader>Add Task</ModalHeader>
+          <ModalHeader>Edit Task</ModalHeader>
           <ModalCloseButton />
           <form
             onSubmit={(e) => {
               e.preventDefault();
-              props.addToDo(
+              props.editTodo(
+                props.id,
                 Date.now(),
                 Date.now(),
                 newName,
                 newDueDate,
                 newDesc,
-                false
+                props.completed
               );
             }}
           >
@@ -110,13 +125,10 @@ export default function AddTask(props: Props) {
                 mr={3}
                 onClick={() => {
                   onClose();
-                  resetName();
-                  resetDueDate();
-                  resetDesc();
-                  addAlert()
+                  editAlert();
                 }}
               >
-                Add Task
+                Edit Task
               </Button>
               <Button variant="ghost" onClick={onClose}>
                 Cancel

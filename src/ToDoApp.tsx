@@ -8,36 +8,75 @@ import { useState, useEffect, Component } from "react";
 
 let listArray: {
   key: number;
+  id: number;
   dueDate: string;
   taskName: string;
   taskDesc: string;
+  completed: boolean;
 }[] = DataSet; //separate dummy dataset file
 
 interface task {
   key: number;
+  id: number;
   taskName: string;
   dueDate: string;
   taskDesc: string;
+  completed: boolean;
 }
 
 export default function ToDoApp() {
   const [todos, setTodos] = useState<task[]>(listArray);
   const addToDo = (
     newKey: number,
+    newID: number,
     newName: string,
     newDueDate: string,
-    newDesc: string
+    newDesc: string,
+    completed: boolean
   ) => {
     setTodos([
       {
         key: newKey,
+        id: newID,
         taskName: newName,
         dueDate: newDueDate,
         taskDesc: newDesc,
+        completed: completed,
       },
       ...todos,
     ]);
   };
+
+  const removeTodo = (todoID: number) => {
+    const newTodos = todos.filter((todo) => todo.id !== todoID);
+    setTodos(newTodos);
+  };
+
+  const editTodo = (
+    todoID: number,
+    newKey: number,
+    newID: number,
+    newTask: string,
+    newDate: string,
+    newDesc: string,
+    newCompleted: boolean
+  ) => {
+    const updatedTodos = todos.map((todo) =>
+      todo.id === todoID
+        ? {
+            ...todo,
+            key: newKey,
+            id: newID,
+            taskName: newTask,
+            dueDate: newDate,
+            taskDesc: newDesc,
+            completed: newCompleted,
+          }
+        : todo
+    );
+    setTodos(updatedTodos)
+  };
+  console.log(todos);
 
   return (
     <Grid //app object
@@ -60,10 +99,10 @@ export default function ToDoApp() {
           <Text fontWeight="extrabold" fontSize="1.7em" margin={5}>
             To Do App
           </Text>
-          <AddTask addToDo={addToDo}/>
+          <AddTask addToDo={addToDo} />
           <Flex justify="center" marginTop={4}>
-          <ToDoList todos={todos} />
-            
+            <ToDoList todos={todos} removeTodo={removeTodo} editTodo={editTodo}/>
+
             {/* {todos ? <ToDoList todos={todos} /> : null } */}
           </Flex>
         </Flex>

@@ -10,7 +10,7 @@ export const App = () => (
       flexDir="column"
       justifyContent="center"
       alignItems="center"
-      margin={5}
+      margin={10}
       fontFamily="Roboto Mono"
     >
       <ToDoApp />
