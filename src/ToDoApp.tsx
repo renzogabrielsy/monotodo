@@ -1,8 +1,4 @@
-import {
-  Text,
-  Grid,
-  Flex,
-} from "@chakra-ui/react";
+import { Text, Grid, Flex } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { Logo } from "./Logo";
 import AddTask from "./AddTask";
@@ -12,14 +8,37 @@ import { useState, useEffect, Component } from "react";
 
 let listArray: {
   key: number;
-  inDate: string;
   dueDate: string;
   taskName: string;
   taskDesc: string;
-}[] = DataSet //separate dataset file
+}[] = DataSet; //separate dummy dataset file
+
+interface task {
+  key: number;
+  taskName: string;
+  dueDate: string;
+  taskDesc: string;
+}
 
 export default function ToDoApp() {
-  
+  const [todos, setTodos] = useState<task[]>(listArray);
+  const addToDo = (
+    newKey: number,
+    newName: string,
+    newDueDate: string,
+    newDesc: string
+  ) => {
+    setTodos([
+      {
+        key: newKey,
+        taskName: newName,
+        dueDate: newDueDate,
+        taskDesc: newDesc,
+      },
+      ...todos,
+    ]);
+  };
+
   return (
     <Grid //app object
       height={{ base: "38em", md: "40.5em" }}
@@ -41,9 +60,11 @@ export default function ToDoApp() {
           <Text fontWeight="extrabold" fontSize="1.7em" margin={5}>
             To Do App
           </Text>
-          <AddTask />
+          <AddTask addToDo={addToDo}/>
           <Flex justify="center" marginTop={4}>
-            <ToDoList todos={listArray} />
+          <ToDoList todos={todos} />
+            
+            {/* {todos ? <ToDoList todos={todos} /> : null } */}
           </Flex>
         </Flex>
       </Flex>
