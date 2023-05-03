@@ -48,11 +48,35 @@ export default function ToDoApp() {
   };
 
   const removeTodo = (todoID: number) => {
-    const newTodos = todos.filter((todo) => todo.id !== todoID)
+    const newTodos = todos.filter((todo) => todo.id !== todoID);
     setTodos(newTodos);
   };
 
-  console.log(todos)
+  const editTodo = (
+    todoID: number,
+    newKey: number,
+    newID: number,
+    newTask: string,
+    newDate: string,
+    newDesc: string,
+    newCompleted: boolean
+  ) => {
+    const updatedTodos = todos.map((todo) =>
+      todo.id === todoID
+        ? {
+            ...todo,
+            key: newKey,
+            id: newID,
+            taskName: newTask,
+            dueDate: newDate,
+            taskDesc: newDesc,
+            completed: newCompleted,
+          }
+        : todo
+    );
+    setTodos(updatedTodos)
+  };
+  console.log(todos);
 
   return (
     <Grid //app object
@@ -77,7 +101,7 @@ export default function ToDoApp() {
           </Text>
           <AddTask addToDo={addToDo} />
           <Flex justify="center" marginTop={4}>
-            <ToDoList todos={todos} removeTodo={removeTodo} />
+            <ToDoList todos={todos} removeTodo={removeTodo} editTodo={editTodo}/>
 
             {/* {todos ? <ToDoList todos={todos} /> : null } */}
           </Flex>

@@ -12,7 +12,19 @@ interface todoProps {
   completed: boolean;
 }
 
-type Props = { todos: todoProps[]; removeTodo: (todoID: number) => void };
+type Props = {
+  todos: todoProps[];
+  removeTodo: (todoID: number) => void;
+  editTodo: (
+    todoID: number,
+    newKey: number,
+    newID: number,
+    newTask: string,
+    newDate: string,
+    newDesc: string,
+    newCompleted: boolean
+  ) => void;
+};
 
 export default function ToDoList(props: Props) {
   return (
@@ -27,6 +39,7 @@ export default function ToDoList(props: Props) {
             taskDesc={taskDesc}
             completed={completed}
             removeTodo={props.removeTodo}
+            editTodo={props.editTodo}
           />
         )
       )}
