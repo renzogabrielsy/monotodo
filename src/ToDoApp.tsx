@@ -5,7 +5,11 @@ import AddTask from "./AddTask";
 import ToDoList from "./ToDoList";
 import DataSet from "./DataSet";
 import { useState, useEffect, Component } from "react";
-
+import GoogleSignIn from "./GoogleSignIn";
+import GoogleSignOut from "./GoogleSIgnOut";
+import { getAuth } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "./firebase";
 
 let listArray: {
   key: number;
@@ -75,10 +79,9 @@ export default function ToDoApp() {
           }
         : todo
     );
-    setTodos(updatedTodos)
+    setTodos(updatedTodos);
   };
-  console.log(todos);
-
+  const [user] = useAuthState(auth, );
   return (
     <Grid //app object
       height={{ base: "38em", md: "40.5em" }}
@@ -97,15 +100,27 @@ export default function ToDoApp() {
         </Flex>
         <Flex direction="column">
           <Logo h="5em" pointerEvents="none" margin={2} />
-          <Text fontWeight="extrabold" fontSize="1.7em" margin={5}>
-            To Do App
+          <Text marginTop={2} fontSize={15} fontStyle='italic'>Roboto</Text>
+          <Text fontWeight="extrabold" fontSize="1.7em" marginBottom={5} marginTop={1}>
+            Monotodo
           </Text>
-          <AddTask addToDo={addToDo} />
-          <Flex justify="center" marginTop={4}>
-            <ToDoList todos={todos} removeTodo={removeTodo} editTodo={editTodo}/>
-
-            {/* {todos ? <ToDoList todos={todos} /> : null } */}
-          </Flex>
+          {user ? (
+            <>
+            <GoogleSignOut />
+            <AddTask addToDo={addToDo} />
+            <Flex justify="center" marginTop={4}>
+              <ToDoList
+                todos={todos}
+                removeTodo={removeTodo}
+                editTodo={editTodo}
+              />
+            </Flex>
+          </>
+            
+          ) : (
+            
+            <GoogleSignIn />
+          )}
         </Flex>
       </Flex>
       <Flex justify="center" align="center" fontSize="2xs" fontStyle="italic">
