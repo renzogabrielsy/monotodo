@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { ChangeEvent } from "react";
 
-export default (initialVal: string) => {
-  const [value, setValue] = useState<string>(initialVal);
+export default (initialVal?: string) => {
+  const [value, setValue] = useState<string | undefined>(initialVal);
   const handleChange: any = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value);
   };

@@ -1,35 +1,44 @@
-import { Text, Grid, Flex } from "@chakra-ui/react";
+import { Text, Grid, Flex, Spacer } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { Logo } from "./Logo";
 import AddTask from "./AddTask";
 import ToDoList from "./ToDoList";
-import DataSet from "./DataSet";
-import { useState, useEffect, Component } from "react";
+import { useState } from "react";
 import GoogleSignIn from "./GoogleSignIn";
 import GoogleSignOut from "./GoogleSIgnOut";
-import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "./firebase";
-
-let listArray: {
-  key: number;
-  id: number;
-  dueDate: string;
-  taskName: string;
-  taskDesc: string;
-  completed: boolean;
-}[] = DataSet; //separate dummy dataset file
-
-interface task {
-  key: number;
-  id: number;
-  taskName: string;
-  dueDate: string;
-  taskDesc: string;
-  completed: boolean;
-}
+import { auth, db } from "./firebase";
+import {
+  collection,
+  setDoc,
+  doc,
+  deleteDoc,
+  updateDoc,
+} from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 export default function ToDoApp() {
+  const todosRef = collection(db, `usersdb/${auth.currentUser?.uid}/todos`);
+  const [fbTodos]: any = useCollectionData(todosRef);
+  console.log(fbTodos);
+
+  let listArray: {
+    key?: number;
+    id?: number;
+    dueDate?: string;
+    taskName?: string;
+    taskDesc?: string;
+    completed?: boolean;
+  }[] = fbTodos; //separate dummy dataset file
+  console.log(listArray);
+  interface task {
+    key?: number;
+    id?: number;
+    dueDate?: string;
+    taskName?: string;
+    taskDesc?: string;
+    completed?: boolean;
+  }
   const [todos, setTodos] = useState<task[]>(listArray);
   const addToDo = (
     newKey: number,
@@ -39,49 +48,39 @@ export default function ToDoApp() {
     newDesc: string,
     completed: boolean
   ) => {
-    setTodos([
-      {
-        key: newKey,
-        id: newID,
-        taskName: newName,
-        dueDate: newDueDate,
-        taskDesc: newDesc,
-        completed: completed,
-      },
-      ...todos,
-    ]);
+    const idField: string = Date.now().toString();
+    setDoc(doc(db, `usersdb/${auth.currentUser?.uid}/todos`, idField), {
+      key: newKey,
+      id: newID,
+      taskName: newName,
+      dueDate: newDueDate,
+      taskDesc: newDesc,
+      completed: completed,
+    });
   };
 
-  const removeTodo = (todoID: number) => {
-    const newTodos = todos.filter((todo) => todo.id !== todoID);
-    setTodos(newTodos);
+  const removeTodo = (todoID?: string) => {
+    const indexID: any = todoID?.toString();
+    deleteDoc(doc(db, `usersdb/${auth.currentUser?.uid}/todos`, indexID));
   };
 
   const editTodo = (
-    todoID: number,
-    newKey: number,
-    newID: number,
-    newTask: string,
-    newDate: string,
-    newDesc: string,
-    newCompleted: boolean
+    todoID?: string,
+    newTask?: string,
+    newDate?: string,
+    newDesc?: string,
+    newCompleted?: boolean
   ) => {
-    const updatedTodos = todos.map((todo) =>
-      todo.id === todoID
-        ? {
-            ...todo,
-            key: newKey,
-            id: newID,
-            taskName: newTask,
-            dueDate: newDate,
-            taskDesc: newDesc,
-            completed: newCompleted,
-          }
-        : todo
-    );
-    setTodos(updatedTodos);
+    const indexID: any = todoID?.toString();
+    updateDoc(doc(db, `usersdb/${auth.currentUser?.uid}/todos`, indexID), {
+      taskName: newTask,
+      dueDate: newDate,
+      taskDesc: newDesc,
+      completed: newCompleted,
+    });
   };
-  const [user] = useAuthState(auth, );
+
+  const [user] = useAuthState(auth);
   return (
     <Grid //app object
       height={{ base: "38em", md: "40.5em" }}
@@ -95,37 +94,44 @@ export default function ToDoApp() {
       rounded="md"
     >
       <Flex direction="column">
-        <Flex justifyContent="flex-end">
+        <Flex justifyContent="space-between">
+          {user ? (<GoogleSignOut />) : <></>}
+          <Spacer />
           <ColorModeSwitcher />
         </Flex>
         <Flex direction="column">
           <Logo h="5em" pointerEvents="none" margin={2} />
-          <Text marginTop={2} fontSize={15} fontStyle='italic'>Roboto</Text>
-          <Text fontWeight="extrabold" fontSize="1.7em" marginBottom={5} marginTop={1}>
+          <Text marginTop={2} fontSize={15} fontStyle="italic">
+            Roboto
+          </Text>
+          <Text
+            fontWeight="extrabold"
+            fontSize="1.7em"
+            marginBottom={5}
+            marginTop={1}
+          >
             Monotodo
           </Text>
           {user ? (
             <>
-            <GoogleSignOut />
-            <AddTask addToDo={addToDo} />
-            <Flex justify="center" marginTop={4}>
-              <ToDoList
-                todos={todos}
-                removeTodo={removeTodo}
-                editTodo={editTodo}
-              />
-            </Flex>
-          </>
-            
+              <AddTask addToDo={addToDo} />
+              <Flex justify="center" marginTop={4}>
+                <ToDoList
+                  todos={listArray}
+                  removeTodo={removeTodo}
+                  editTodo={editTodo}
+                />
+              </Flex>
+            </>
           ) : (
-            
             <GoogleSignIn />
           )}
         </Flex>
       </Flex>
-      <Flex justify="center" align="center" fontSize="2xs" fontStyle="italic">
+      <Spacer />
+      {/* <Flex justify="center" align="center" fontSize="2xs" fontStyle="italic" maxHeight={10}>
         Made by Renzo Sy
-      </Flex>
+      </Flex> */}
     </Grid>
   );
 }

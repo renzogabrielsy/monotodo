@@ -25,21 +25,19 @@ import useToggleHook from "./hooks/useToggleHook";
 import EditTask from "./EditTask";
 
 type Props = {
-  key: number;
-  id: number;
-  dueDate: any;
-  taskName: string;
-  taskDesc: string;
-  completed: boolean;
-  removeTodo: (todoID: number) => void;
+  key?: number;
+  id?: number;
+  dueDate?: string;
+  taskName?: string;
+  taskDesc?: string;
+  completed?: boolean;
+  removeTodo: (todoID?: string) => void;
   editTodo: (
-    todoID: number,
-    newKey: number,
-    newID: number,
-    newTask: string,
-    newDate: string,
-    newDesc: string,
-    newCompleted: boolean
+    todoID?: string,
+    newTask?: string,
+    newDate?: string,
+    newDesc?: string,
+    newCompleted?: boolean
   ) => void;
 };
 
@@ -120,7 +118,7 @@ export default function ToDoItem(props: Props) {
                   mr={3}
                   onClick={() => {
                     onClose();
-                    props.removeTodo(props.id);
+                    props.removeTodo(props.id?.toString());
                     deleteAlert();
                   }}
                 >

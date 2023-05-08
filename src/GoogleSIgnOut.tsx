@@ -3,7 +3,7 @@ import { Button } from "@chakra-ui/react";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import "firebase/functions";
-import { FaFacebook, FaGoogle} from "react-icons/fa";
+import { GoSignOut } from "react-icons/go";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBvF9RaIkSlg4NyVjc_I8GNDidCZeufyN0",
@@ -22,8 +22,8 @@ const signOut = () => auth.signOut();
 export default function GoogleSignOut() {
   return (
     <>
-      <Button colorScheme='teal' leftIcon={<FaGoogle />} onClick={() => signOut()}>
-        Sign Out
+      <Button colorScheme="teal" onClick={() => signOut()} justifyContent='center' alignContent='center' paddingRight={3} paddingTop={1}>
+        <GoSignOut />
       </Button>
     </>
   );

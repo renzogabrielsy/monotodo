@@ -21,19 +21,17 @@ import useInputHook from "./hooks/useInputHook";
 import { EditIcon } from "@chakra-ui/icons";
 
 interface Props {
-  id: number;
-  dueDate: string;
-  taskName: string;
-  taskDesc: string;
-  completed: boolean;
+  id?: number;
+  dueDate?: string;
+  taskName?: string;
+  taskDesc?: string;
+  completed?: boolean;
   editTodo: (
-    todoID: number,
-    newKey: number,
-    newID: number,
-    newTask: string,
-    newDate: string,
-    newDesc: string,
-    newCompleted: boolean
+    todoID?: string,
+    newTask?: string,
+    newDate?: string,
+    newDesc?: string,
+    newCompleted?: boolean
   ) => void;
 }
 
@@ -69,9 +67,7 @@ export default function EditTask(props: Props) {
             onSubmit={(e) => {
               e.preventDefault();
               props.editTodo(
-                props.id,
-                Date.now(),
-                Date.now(),
+                props.id?.toString(),
                 newName,
                 newDueDate,
                 newDesc,
