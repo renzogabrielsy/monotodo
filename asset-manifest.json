@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.js": "/monotodo/static/js/main.2448e53d.js",
+    "static/js/787.65bb26b7.chunk.js": "/monotodo/static/js/787.65bb26b7.chunk.js",
+    "index.html": "/monotodo/index.html",
+    "static/media/logo.svg": "/monotodo/static/media/logo.de23c2f6e22e8004cdfcc6a63bb59e36.svg",
+    "main.2448e53d.js.map": "/monotodo/static/js/main.2448e53d.js.map",
+    "787.65bb26b7.chunk.js.map": "/monotodo/static/js/787.65bb26b7.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.2448e53d.js"
+  ]
+}
