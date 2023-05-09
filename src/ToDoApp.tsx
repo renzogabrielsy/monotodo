@@ -1,13 +1,3 @@
-import { Text, Grid, Flex, Spacer } from "@chakra-ui/react";
-import { ColorModeSwitcher } from "./ColorModeSwitcher";
-import { Logo } from "./Logo";
-import AddTask from "./AddTask";
-import ToDoList from "./ToDoList";
-import { useState } from "react";
-import GoogleSignIn from "./GoogleSignIn";
-import GoogleSignOut from "./GoogleSIgnOut";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db } from "./firebase";
 import {
   collection,
   setDoc,
@@ -15,12 +5,33 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "./firebase";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+
+import {
+  Text,
+  Grid,
+  Flex,
+  Spacer,
+  SkeletonText,
+  SkeletonCircle,
+} from "@chakra-ui/react";
+import { ColorModeSwitcher } from "./ColorModeSwitcher";
+import { Logo } from "./Logo";
+import AddTask from "./AddTask";
+import ToDoList from "./ToDoList";
+import GoogleSignIn from "./GoogleSignIn";
+import GoogleSignOut from "./GoogleSIgnOut";
+
 
 export default function ToDoApp() {
   const todosRef = collection(db, `usersdb/${auth.currentUser?.uid}/todos`);
-  const [fbTodos]: any = useCollectionData(todosRef);
-  console.log(fbTodos);
+  const [fbTodos, loading, error]: any = useCollectionData(todosRef);
+  const [user] = useAuthState(auth);
+  const userEmail: string | null | undefined = auth.currentUser?.email
+  const userDisplayName: string | null | undefined = auth.currentUser?.displayName
+  const userDP: string | null | undefined = auth.currentUser?.photoURL
 
   let listArray: {
     key?: number;
@@ -29,17 +40,11 @@ export default function ToDoApp() {
     taskName?: string;
     taskDesc?: string;
     completed?: boolean;
-  }[] = fbTodos; //separate dummy dataset file
-  console.log(listArray);
-  interface task {
-    key?: number;
-    id?: number;
-    dueDate?: string;
-    taskName?: string;
-    taskDesc?: string;
-    completed?: boolean;
-  }
-  const [todos, setTodos] = useState<task[]>(listArray);
+  }[] = fbTodos;
+
+  console.log(fbTodos, loading, error);
+  console.log([userEmail, userDisplayName, userDP])
+
   const addToDo = (
     newKey: number,
     newID: number,
@@ -80,7 +85,6 @@ export default function ToDoApp() {
     });
   };
 
-  const [user] = useAuthState(auth);
   return (
     <Grid //app object
       height={{ base: "38em", md: "40.5em" }}
@@ -90,12 +94,14 @@ export default function ToDoApp() {
       borderColor={{ base: "blackAlpha.500", md: "blackAlpha.500" }}
       borderRadius={50}
       boxShadow={{ base: 0, md: "dark-lg" }}
-      p="6"
+      p="5"
       rounded="md"
     >
       <Flex direction="column">
         <Flex justifyContent="space-between">
-          {user ? (<GoogleSignOut />) : <></>}
+          <SkeletonCircle isLoaded={!loading} size="10" ml={2}>
+            {user ? <GoogleSignOut /> : <></>}
+          </SkeletonCircle>
           <Spacer />
           <ColorModeSwitcher />
         </Flex>
@@ -112,26 +118,45 @@ export default function ToDoApp() {
           >
             Monotodo
           </Text>
-          {user ? (
-            <>
-              <AddTask addToDo={addToDo} />
-              <Flex justify="center" marginTop={4}>
-                <ToDoList
-                  todos={listArray}
-                  removeTodo={removeTodo}
-                  editTodo={editTodo}
-                />
+          <SkeletonText
+            noOfLines={10}
+            spacing={{ base: "5", md: "7" }}
+            skeletonHeight="5"
+            isLoaded={!loading}
+            fadeDuration={1}
+            pl={5}
+            pr={5}
+            height="45vh"
+          >
+            {user ? (
+              <>
+                <AddTask addToDo={addToDo} />
+                <Flex justify="center" marginTop={4}>
+                  <ToDoList
+                    todos={listArray}
+                    removeTodo={removeTodo}
+                    editTodo={editTodo}
+                  />
+                </Flex>
+              </>
+            ) : (
+              <Flex justify="center" align="center" height="30vh">
+                <GoogleSignIn />
               </Flex>
-            </>
-          ) : (
-            <GoogleSignIn />
-          )}
+            )}
+          </SkeletonText>
         </Flex>
       </Flex>
-      <Spacer />
-      {/* <Flex justify="center" align="center" fontSize="2xs" fontStyle="italic" maxHeight={10}>
-        Made by Renzo Sy
-      </Flex> */}
+      <Flex
+        justify="center"
+        align="flex-end"
+        fontSize="2xs"
+        fontStyle="italic"
+        padding={0}
+        mb={3}
+      >
+        <Flex>Made by Renzo Sy</Flex>
+      </Flex>
     </Grid>
   );
 }

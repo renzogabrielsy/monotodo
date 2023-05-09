@@ -1,5 +1,5 @@
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { Button } from "@chakra-ui/react";
+import { Button, IconButton } from "@chakra-ui/react";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import "firebase/functions";
@@ -22,9 +22,20 @@ const signOut = () => auth.signOut();
 export default function GoogleSignOut() {
   return (
     <>
-      <Button colorScheme="teal" onClick={() => signOut()} justifyContent='center' alignContent='center' paddingRight={3} paddingTop={1}>
-        <GoSignOut />
-      </Button>
+      <IconButton
+        aria-label="Sign out"
+        icon={<GoSignOut />}
+        size="md"
+        fontSize="lg"
+        variant="ghost"
+        color="current"
+        // colorScheme="teal"
+        onClick={() => signOut()}
+        // justifyContent="center"
+        // alignContent="center"
+        paddingLeft={1}
+        paddingTop={0}
+      ></IconButton>
     </>
   );
 }

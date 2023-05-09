@@ -1,9 +1,14 @@
-import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  GoogleAuthProvider,
+  signInWithRedirect,
+} from "firebase/auth";
 import { Button } from "@chakra-ui/react";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import "firebase/functions";
-import { FaGoogle} from "react-icons/fa";
+import { FaGoogle } from "react-icons/fa";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBvF9RaIkSlg4NyVjc_I8GNDidCZeufyN0",
@@ -19,14 +24,23 @@ initializeApp(firebaseConfig);
 export const db = getFirestore();
 const auth = getAuth();
 const provider = new GoogleAuthProvider();
-signInWithPopup(auth, provider)
+// signInWithPopup(auth, provider)
+// signInWithRedirect(auth, provider)
 
 export default function GoogleSignIn() {
   return (
     <>
-      <Button colorScheme='teal' leftIcon={<FaGoogle />} onClick={() => signInWithPopup(auth, provider)}>
-  
-        Login
+      <Button
+        colorScheme="teal"
+        leftIcon={<FaGoogle />}
+        onClick={() => signInWithRedirect(auth, provider)}
+        size="lg"
+        width="16em"
+        fontSize='lg'
+        fontWeight='bold'
+        padding={7}
+      >
+        Login with Google
       </Button>
     </>
   );

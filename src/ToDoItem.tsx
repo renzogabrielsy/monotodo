@@ -20,7 +20,7 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon, ChevronRightIcon } from "@chakra-ui/icons";
+import { DeleteIcon, ChevronRightIcon } from "@chakra-ui/icons";
 import useToggleHook from "./hooks/useToggleHook";
 import EditTask from "./EditTask";
 

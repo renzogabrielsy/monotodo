@@ -1,8 +1,5 @@
 import { Accordion } from "@chakra-ui/react";
 import ToDoItem from "./ToDoItem";
-import React from "react";
-import { useState, useEffect } from "react";
-
 interface todoProps {
   key?: number;
   id?: number;
