@@ -16,6 +16,22 @@ import {
   Spacer,
   SkeletonText,
   SkeletonCircle,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  useDisclosure,
+  Image,
+  MenuDivider,
+  Button,
+  Icon,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { ColorModeSwitcher } from "./ColorModeSwitcher";
 import { Logo } from "./Logo";
@@ -23,15 +39,19 @@ import AddTask from "./AddTask";
 import ToDoList from "./ToDoList";
 import GoogleSignIn from "./GoogleSignIn";
 import GoogleSignOut from "./GoogleSIgnOut";
-
+import { HamburgerIcon } from "@chakra-ui/icons";
+import { GoSignOut } from "react-icons/go";
 
 export default function ToDoApp() {
   const todosRef = collection(db, `usersdb/${auth.currentUser?.uid}/todos`);
   const [fbTodos, loading, error]: any = useCollectionData(todosRef);
   const [user] = useAuthState(auth);
-  const userEmail: string | null | undefined = auth.currentUser?.email
-  const userDisplayName: string | null | undefined = auth.currentUser?.displayName
-  const userDP: string | null | undefined = auth.currentUser?.photoURL
+  const userEmail: string | null | undefined = auth.currentUser?.email;
+  const userDisplayName: string | null | undefined =
+    auth.currentUser?.displayName;
+  const userDP: string | null | undefined = auth.currentUser?.photoURL;
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const signOut = () => auth.signOut();
 
   let listArray: {
     key?: number;
@@ -43,7 +63,7 @@ export default function ToDoApp() {
   }[] = fbTodos;
 
   console.log(fbTodos, loading, error);
-  console.log([userEmail, userDisplayName, userDP])
+  console.log([userEmail, userDisplayName, userDP]);
 
   const addToDo = (
     newKey: number,
@@ -100,7 +120,98 @@ export default function ToDoApp() {
       <Flex direction="column">
         <Flex justifyContent="space-between">
           <SkeletonCircle isLoaded={!loading} size="10" ml={2}>
-            {user ? <GoogleSignOut /> : <></>}
+            {user ? (
+              <>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    aria-label="Menu"
+                    padding={0}
+                    margin={0}
+                    borderRadius="full"
+                    variant="outline"
+                  >
+                    <Image
+                      borderRadius="full"
+                      src={`${userDP}`}
+                      alt={`${userDisplayName}`}
+                    />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>
+                      <Image
+                        boxSize="2rem"
+                        borderRadius="full"
+                        src={`${userDP}`}
+                        alt={`${userDisplayName}`}
+                        mr="12px"
+                        referrerPolicy="no-referrer"
+                      />
+                      <Flex flexDirection="column" fontSize="sm">
+                        <Text>{userDisplayName}</Text>
+                        <Text>{userEmail}</Text>
+                      </Flex>
+                    </MenuItem>
+                    <MenuDivider margin={0} />
+                    <MenuItem
+                      fontSize="md"
+                      color="red.500"
+                      mt={2}
+                      fontWeight="bold"
+                      as={Button}
+                      onClick={onOpen}
+                      display="flex"
+                      justifyContent="flex-start"
+                    >
+                      <Icon as={GoSignOut} ml={3} mr={5} />
+                      <Text>Sign Out</Text>
+                    </MenuItem>
+                    <Modal
+                      isOpen={isOpen}
+                      onClose={onClose}
+                      size={{ base: "xs", md: "md" }}
+                      isCentered
+                    >
+                      <ModalOverlay />
+                      <ModalContent fontFamily="Roboto Mono">
+                        <ModalHeader>Sign Out</ModalHeader>
+                        <ModalCloseButton />
+                        <ModalBody>
+                          <Text textAlign="center">
+                            Are you sure you want to sign out of:
+                          </Text>
+                          <Text
+                            margin={5}
+                            textAlign="center"
+                            fontStyle="italic"
+                            fontWeight="bold"
+                          >
+                            {userEmail} ?
+                          </Text>
+                        </ModalBody>
+
+                        <ModalFooter>
+                          <Button
+                            colorScheme="red"
+                            mr={3}
+                            onClick={() => {
+                              signOut();
+                            }}
+                          >
+                            Sign Out
+                          </Button>
+                          <Button variant="ghost" onClick={onClose}>
+                            Cancel
+                          </Button>
+                        </ModalFooter>
+                      </ModalContent>
+                    </Modal>
+                  </MenuList>
+                </Menu>
+              </>
+            ) : (
+              <></>
+            )}
           </SkeletonCircle>
           <Spacer />
           <ColorModeSwitcher />
