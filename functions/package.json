@@ -1,4 +1,5 @@
 {
+  "homepage": "https://renzogabrielsy.github.io/monotodo",
   "name": "functions",
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
@@ -7,6 +8,8 @@
     "serve": "npm run build && firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
+    "predeploy": "npm rum build",
+    "deploy": "gh-pages -d build",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
